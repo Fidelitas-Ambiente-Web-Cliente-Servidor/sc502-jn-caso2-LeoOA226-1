@@ -81,4 +81,5 @@ class Solicitud
         $stmt->execute();
         return $stmt->affected_rows > 0;
 
+    }
 }
