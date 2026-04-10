@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Login</title>
+    <title>Registro</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -31,11 +31,12 @@
             placeholder="Contraseña">
 
         <button type="submit" class="btn btn-primary">
-            Ingresar
+            Registrarse
         </button>
-
+        <a href="index.php?page=login" class="btn btn-secondary">Volver al login</a>
     </form>
-
+    
+    <div id="mensaje" class="mt-3"></div>
 
 
 </body>

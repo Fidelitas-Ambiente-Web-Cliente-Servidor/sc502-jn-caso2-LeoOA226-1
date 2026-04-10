@@ -17,7 +17,10 @@ $(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response.response === '00') {
-                        window.location.href = 'index.php?page=talleres';
+                        $('#mensaje').text(response.message).css('color', 'green').show();
+                        setTimeout(function () {
+                            window.location.href = 'index.php?page=login';
+                        }, 1000);
                     } else {
                         $('#mensaje').text(response.message).css('color', 'red').show();
                     }
@@ -26,11 +29,6 @@ $(function () {
                     $('#mensaje').text('Error de conexión').css('color', 'red').show();
                 }
             });
-
         }
-
-
-    })
-
-
-})
+    });
+});

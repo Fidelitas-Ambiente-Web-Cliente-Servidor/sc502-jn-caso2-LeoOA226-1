@@ -41,12 +41,48 @@ class TallerController
     public function solicitar()
     {
         if (!isset($_SESSION['id'])) {
+            header('Content-Type: application/json');
             echo json_encode(['success' => false, 'error' => 'Debes iniciar sesión']);
             return;
         }
         
         $tallerId = $_POST['taller_id'] ?? 0;
         $usuarioId = $_SESSION['id'];
+
+        if (!$tallerId) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Taller inválido']);
+            return;
+        }
+
+        $taller = $this->tallerModel->getById($tallerId);
+
+        if (!$taller) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'El taller no existe']);
+            return;
+        }
+
+        if ((int)$taller['cupo_disponible'] <= 0) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'El taller no tiene cupos disponibles']);
+            return;
+        }
+
+        if ($this->solicitudModel->existeSolicitudActiva($tallerId, $usuarioId)) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Ya tienes una solicitud activa o aprobada para este taller']);
+            return;
+        }
+
+        if ($this->solicitudModel->create($tallerId, $usuarioId)) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Solicitud enviada correctamente']);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'No se pudo registrar la solicitud']);
+        }
+    }
 
     }
 }
